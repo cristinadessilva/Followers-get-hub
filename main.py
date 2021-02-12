@@ -17,10 +17,31 @@ class listFollowers():
         data_api = self.request_api()
         if type(data_api) is not int:
             for i in range(len(data_api)):
-                print(data_api[i]['login'])
+                print (data_api[i]['login'])
+                
+
         else:
             print(data_api)
 
 
-followers = listFollowers('cristinadessilva')
-followers.show_followers()
+import PySimpleGUI as sg
+
+layout = [[sg.Text("What's your user from Github?")],
+          [sg.Input(key='-INPUT-')],
+          [sg.Text(size=(40,1), key='-OUTPUT-')],
+          [sg.Button('Ok'), sg.Button('Quit')]]
+
+window = sg.Window('Followers GitHub', layout)
+
+while True:
+    event, values = window.read()
+
+    if event == sg.WINDOW_CLOSED or event == 'Quit':
+        break
+
+    window['-OUTPUT-'].update('Followers from: ' + values['-INPUT-'],)
+    user = listFollowers(values['-INPUT-'])
+    user.show_followers()
+
+window.close()
+
